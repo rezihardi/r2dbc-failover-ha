@@ -3,6 +3,10 @@ package com.digicore.demor2dbcfailover.controller;
 import com.digicore.demor2dbcfailover.model.PojoTutorial;
 import com.digicore.demor2dbcfailover.model.Tutorial;
 import com.digicore.demor2dbcfailover.service.TutorialService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -14,10 +18,18 @@ import reactor.core.publisher.Mono;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Tutorial Bootcamp API")
 public class TutorialController implements ErrorController {
     @Autowired
     TutorialService tutorialService;
 
+    //header
+    @Operation(summary = "Get a tutorial object by title", description = "API to return tutorial List")
+    //mocking description
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404", description = "Not found - The product was not found")
+    })
     @GetMapping("/tutorials")
     @ResponseStatus(HttpStatus.OK)
     public Flux<Tutorial> getAllTutorials(@RequestParam(required = false) String title) {
